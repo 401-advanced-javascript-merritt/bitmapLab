@@ -2,94 +2,59 @@
 
 const fs = require('fs');
 
-/**
- * Bitmap -- receives a file name, used in the transformer to note the new buffer
- * @param filePath
- * @constructor
- */
-function Bitmap(filePath) {
-  this.file = filePath;
-}
+const grey = require('./lib/greyscale.js');
+const clown = require('./lib/clown.js');
+const random = require('./lib/random.js');
+const invert = require('./lib/invert.js');
 
-/**
- * Parser -- accepts a buffer and will parse through it, according to the specification, creating object properties for each segment of the file
- * @param buffer
- */
-Bitmap.prototype.parse = function(buffer) {
-  this.buffer = buffer;
-  this.type = buffer.toString('utf-8', 0, 2);
-  //... and so on
-};
 
-/**
- * Transform a bitmap using some set of rules. The operation points to some function, which will operate on a bitmap instance
- * @param operation
- */
-Bitmap.prototype.transform = function(operation) {
-  // This is really assumptive and unsafe
-  transforms[operation](this);
-  this.newFile = this.file.replace(/\.bmp/, `.${operation}.bmp`);
-};
-
-/**
- * Sample Transformer (greyscale)
- * Would be called by Bitmap.transform('greyscale')
- * Pro Tip: Use "pass by reference" to alter the bitmap's buffer in place so you don't have to pass it around ...
- * @param bmp
- */
-const transformGreyscale = (bmp) => {
-
-  console.log('Transforming bitmap into greyscale', bmp);
-
-  //TODO: Figure out a way to validate that the bmp instance is actually valid before trying to transform it
-
-  //TODO: alter bmp to make the image greyscale ...
-
-};
-
-const doTheInversion = (bmp) => {
-  bmp = {};
-};
-
-/**
- * A dictionary of transformations
- * Each property represents a transformation that someone could enter on the command line and then a function that would be called on the bitmap to do this job
- */
-const transforms = {
-  greyscale: transformGreyscale,
-  invert: doTheInversion,
-};
-
-// ------------------ GET TO WORK ------------------- //
-
-function transformWithCallbacks() {
-
-  fs.readFile(file, (err, buffer) => {
-
-    if (err) {
-      throw err;
-    }
-
-    bitmap.parse(buffer);
-
-    bitmap.transform(operation);
-
-    // Note that this has to be nested!
-    // Also, it uses the bitmap's instance properties for the name and thew new buffer
-    fs.writeFile(bitmap.newFile, bitmap.buffer, (err, out) => {
-      if (err) {
-        throw err;
+class Bitmap {
+  constructor(file){
+    if(!file || !operation){return null;}
+    this.file = file;
+    this.newfile = this.file.replace(/\.bmp/, `${operation}.bmp`);
+  }
+  read(){
+    fs.readFile(this.file, (err, buffer) => {
+      if(err) {
+        return null;
       }
-      console.log(`Bitmap Transformed: ${bitmap.newFile}`);
+      this.parse(buffer);
     });
+  }
+  parse(buffer){
 
-  });
+    this.COLOR_TABLE_OFFSET = 54;
+    this.PIXEL_ARRAY_OFFSET = 1145;
+
+    this.buffer = buffer;
+    this.type = buffer.toString('utf-8', 0, 2);
+
+    this.colorTable = buffer.slice(this.COLOR_TABLE_OFFSET, this.PIXEL_ARRAY_OFFSET);
+    this.pixelArray = buffer.slice(this.PIXEL_ARRAY_OFFSET);
+
+    this.transform(operation, this);
+    this.write(this.file, this.buffer, operation );
+  }
+  transform(operation, buffer){
+    if(operation === 'grey'){return grey.transform(buffer);}
+    if(operation === 'clown'){return clown.transform(buffer);}
+    if(operation === 'invert'){return invert.transform(buffer);}
+    if(operation === 'random'){return random.transform(buffer);}
+    else{return null;}
+  }
+  write(file, buffer){
+    fs.writeFile(this.newfile, buffer, (err, out) =>{
+      if(err){
+        return null;
+      }
+      console.log('file created.');
+    });
+  }
 }
 
-// TODO: Explain how this works (in your README)
 const [file, operation] = process.argv.slice(2);
 
-let bitmap = new Bitmap(file);
+let bald = new Bitmap(file);
 
-transformWithCallbacks();
-
+bald.read();
