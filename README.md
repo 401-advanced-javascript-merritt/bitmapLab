@@ -7,10 +7,12 @@
 
 ### Links and Resources
 * [Pull Request]()
-* [travis]()
+
+[![Build Status](https://www.travis-ci.com/401-advanced-javascript-merritt/bitmapLab.svg?branch=master)](https://www.travis-ci.com/401-advanced-javascript-merritt/bitmapLab)
+
 
 #### Documentation
-* [jsdoc]() 
+* [jsdoc](docs/index.html) 
 
 ### Modules
 #### `index.js`
