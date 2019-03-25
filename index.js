@@ -14,6 +14,9 @@ class Bitmap {
     this.file = file;
     this.newfile = this.file.replace(/\.bmp/, `${operation}.bmp`);
   }
+  /**
+   * @returns {} buffer
+   */
   read(){
     fs.readFile(this.file, (err, buffer) => {
       if(err) {
@@ -22,6 +25,10 @@ class Bitmap {
       this.parse(buffer);
     });
   }
+  /**
+   * @param  {} buffer
+   * @returns {} buffer object
+   */
   parse(buffer){
 
     this.COLOR_TABLE_OFFSET = 54;
@@ -36,6 +43,11 @@ class Bitmap {
     this.transform(operation, this);
     this.write(this.file, this.buffer, operation );
   }
+  /**
+   * @param  {} operation
+   * @param  {} buffer
+   * @returns transformed buffer
+   */
   transform(operation, buffer){
     if(operation === 'grey'){return grey.transform(buffer);}
     if(operation === 'clown'){return clown.transform(buffer);}
@@ -43,7 +55,11 @@ class Bitmap {
     if(operation === 'random'){return random.transform(buffer);}
     else{return null;}
   }
-  write(file, buffer){
+  /**
+   * @param  {} buffer
+   * @returns creates a new bitmap
+   */
+  write(buffer){
     fs.writeFile(this.newfile, buffer, (err, out) =>{
       if(err){
         return null;
