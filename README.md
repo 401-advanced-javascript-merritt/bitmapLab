@@ -6,7 +6,9 @@
 ### Author: Chris Merritt and Aaron Ferris 
 
 ### Links and Resources
+
 * [Pull Request](https://github.com/401-advanced-javascript-merritt/bitmapLab/pull/3)
+
 
 [![Build Status](https://www.travis-ci.com/401-advanced-javascript-merritt/bitmapLab.svg?branch=master)](https://www.travis-ci.com/401-advanced-javascript-merritt/bitmapLab)
 
