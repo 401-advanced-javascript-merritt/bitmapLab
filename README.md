@@ -6,7 +6,9 @@
 ### Author: Chris Merritt and Aaron Ferris 
 
 ### Links and Resources
-* [Pull Request](https://github.com/401-advanced-javascript-merritt/bitmapLab/pull/2)
+
+* [Pull Request](https://github.com/401-advanced-javascript-merritt/bitmapLab/pull/3)
+
 
 [![Build Status](https://www.travis-ci.com/401-advanced-javascript-merritt/bitmapLab.svg?branch=master)](https://www.travis-ci.com/401-advanced-javascript-merritt/bitmapLab)
 
@@ -126,6 +128,7 @@
 * to run the file:
   * first navigate to the base of your directory
   * type `node index.js /assets/filename operation`
+ *Example: `node index.js assets/baldy.bmp invert`
 * Endpoint: `./assets/`
   * Returns a BMP file that has been modified
 
