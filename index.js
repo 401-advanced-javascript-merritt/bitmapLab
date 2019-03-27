@@ -59,7 +59,7 @@ class Bitmap {
    * @param  {} buffer
    * @returns creates a new bitmap
    */
-  write(buffer){
+  write(file, buffer){
     fs.writeFile(this.newfile, buffer, (err, out) =>{
       if(err){
         return null;
